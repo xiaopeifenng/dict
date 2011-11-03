@@ -12,8 +12,11 @@ all: dict$(EXP)
 clean:
 	-$(RM) *.o dict$(EXP)
 
-dict$(EXP): rbtree.o query.o dict.o
-	$(LINK) -o dict$(EXP) rbtree.o query.o dict.o
+dict$(EXP): rbtree.o query.o dict.o main.o
+	$(LINK) -o dict$(EXP) rbtree.o query.o dict.o main.o
+
+main.o: main.c common.h rbtree.h query.h dict.h
+	$(CC) $(CFLAG) main.c
 
 dict.o: dict.c query.h rbtree.h dict.h
 	$(CC) $(CFLAG) dict.c

@@ -2,11 +2,11 @@
 #define _QUERY_H_
 
 #include"rbtree.h"
+#include"dict.h"
 
 struct page
 {
-  unsigned long offset;
-  char *word;
+  struct word * word;
   struct rb_node rb_page_cache;
 };
 
