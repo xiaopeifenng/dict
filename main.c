@@ -14,12 +14,12 @@ int main(int argc, char *argv[])
 {
   long starttime = clock(), endtime;
   long count = 0,savedword = 0;
-  struct word w;
+  word w;
   char word[MAXWORD];
   FILE *ifp,*ifp2,*ofp;
 
   struct inode root = {.i_rb_page_cache = {NULL}};
-  struct page * p,tmp = {.word = &w};
+  page * p,tmp = {.word = &w};
 
   if(argc != 4){
 	fprintf(stderr, "%s : Usege: %s input input2 output",argv[0],argv[0]);
@@ -41,12 +41,12 @@ int main(int argc, char *argv[])
 
   while(fgetword(&w,ifp)!=NULL){
 	if(rb_search_page_cache(&root, &tmp)==NULL){
-	  p = (struct page *) malloc(sizeof(struct page));
+	  p = (page *) malloc(sizeof(page));
 	  if(p == NULL){
 		fprintf(stderr, "%s : Memory error.\n",argv[0]);
 		exit(2);
 	  }
-	  p->word = (struct word *) malloc(sizeof(word));
+	  p->word = (struct word *) malloc (sizeof(word));
 	  if(p->word == NULL){
 		fprintf(stderr, "%s : Memory error.\n",argv[0]);
 		exit(2);
