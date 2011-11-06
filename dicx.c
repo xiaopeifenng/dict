@@ -62,6 +62,7 @@ int __make_dicx_data_block(struct rb_node *n,
 	  words[parent].rb_page_cache.rb_right =
 	                &(words[*count].rb_page_cache);
   }
+  rb_set_color(&(words[*count].rb_page_cache),rb_color(n));
   words[*count].rb_page_cache.rb_left = NULL;
   words[*count].rb_page_cache.rb_right = NULL;
 
@@ -99,23 +100,23 @@ dicx_data_block * make_dicx_data_block(page *p, dicx_data_block *d)
 page * dicx_data_block_to_rbtree(dicx_data_block *d)
 {
   int i;
-  unsigned int oldoffset,newoffset,p;
+  unsigned int oldoffset,newoffset;
+  struct rb_node *p;
 
   oldoffset = (unsigned int) rb_parent(&(d->words[0].rb_page_cache));
   newoffset = (unsigned int) &(d->words[0].rb_page_cache);
   rb_set_parent(&(d->words[0].rb_page_cache),NULL);
   for(i=0;i<d->count;i++){
-	d->words[i];
-	p = (unsigned int)rb_parent(&(d->words[i].rb_page_cache));
-	p = (p==0) ? 0 : (p - oldoffset + newoffset);
-	rb_set_parent(&(d->words[i].rb_page_cache),(struct rb_node *)p);
+	p = rb_parent(&(d->words[i].rb_page_cache));
+	p = (p==NULL) ? NULL : (struct rb_node *)((unsigned int)p - oldoffset + newoffset);
+	rb_set_parent(&(d->words[i].rb_page_cache),p);
 
-	p = (unsigned int)d->words[i].rb_page_cache.rb_left;
-	p = (p==0) ? 0 : (p - oldoffset + newoffset);
-	d->words[i].rb_page_cache.rb_left = (struct rb_node *)p;
-	p = (unsigned int)d->words[i].rb_page_cache.rb_right;
-	p = (p==0) ? 0 : (p - oldoffset + newoffset);
-	d->words[i].rb_page_cache.rb_right = (struct rb_node *)p;
+	p = d->words[i].rb_page_cache.rb_left;
+	p = (p==NULL) ? NULL : (struct rb_node *)((unsigned int)p - oldoffset + newoffset);
+	d->words[i].rb_page_cache.rb_left = p;
+	p = d->words[i].rb_page_cache.rb_right;
+	p = (p==NULL) ? NULL : (struct rb_node *)((unsigned int)p - oldoffset + newoffset);
+	d->words[i].rb_page_cache.rb_right = p;
   }
   return & d->words[0];
 }

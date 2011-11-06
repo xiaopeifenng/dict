@@ -32,10 +32,9 @@ static inline page * __rb_insert_page_cache(struct inode * inode,
 	page * pg;
 
 	while (*p)
-	{
+	  {
 		parent = *p;
 		pg = rb_entry(parent, page, rb_page_cache);
-
 		if (wordcmp(&pnode->word,&pg->word) < 0)
 			p = &(*p)->rb_left;
 		else if (wordcmp(&pnode->word,&pg->word) > 0)

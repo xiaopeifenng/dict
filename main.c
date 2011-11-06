@@ -79,16 +79,15 @@ int main(int argc, char *argv[])
      Time used : %ld ms. Speed : %f K words/s\n",
 		 count, savedword,
 		 endtime-starttime, (double)count/(endtime-starttime));*/
-  fclose(ifp2);
   fclose(ofp);
-  ifp2=fopen("dic.dict","rb");
-  fread(b,sizeof(dicx_data_block),1,ifp2);
+  ifp=fopen(argv[3],"rb");
+  fread(b,sizeof(dicx_data_block),1,ifp);
   pp = dicx_data_block_to_rbtree(b);
   root.i_rb_page_cache.rb_node = & pp->rb_page_cache;
 
   count = 0;
-  ifp=fopen("dic2.txt","r");
-  while(fgetword(&tmp.word,ifp)!=NULL){
+
+  while(fgetword(&tmp.word,ifp2)!=NULL){
 	if(rb_search_page_cache(&root, &tmp)==NULL){
 	  p = (page *) malloc(sizeof(page));
 	  if(p == NULL){
@@ -96,7 +95,10 @@ int main(int argc, char *argv[])
 		exit(2);
 	  }
 	  memcpy(p, &tmp, sizeof(page));
+	  sprintword(word,&(tmp.word));
+	  puts(word);
 	  rb_insert_page_cache(&root, p);
+	  printf("insert a new password\n");
 	  count ++;
 	}
   }
