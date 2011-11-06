@@ -4,8 +4,10 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"common.h"
+#include"rbtree.h"
+#include"query.h"
 
-#define BLOCKWORDS 0x20000
+#define BLOCKWORDS 0x10000
 #define MAXSPACE 1024
 
 typedef struct dicx_head
@@ -26,7 +28,7 @@ typedef struct dicx_data_block
   int count;
   page words[BLOCKWORDS];
 } dicx_data_block;
-
+/*
 typedef struct dicx_index_node
 {
   unsigned int hashval;
@@ -36,12 +38,8 @@ typedef struct dicx_index_node
   unsigned int count;
   dicx_data_block data;
 } dicx_index_node;
-
-
-
-dicx_head  * dicx_get_head   (dicx_head *h, FILE *dic);
-void         dicx_write_head (dicx_head * h, FILE *dic);
-dicx_block * dicx_get_block  (dicx_block * b, off64_t offset, FILE *dic);
-void         dicx_write_block (dicx_block *b, off64_t offset, FILE *dic);
+*/
+dicx_data_block * make_dicx_data_block(page *, dicx_data_block *);
+page * dicx_data_block_to_rbtree(dicx_data_block *);
 
 #endif /* _DICX_H_ */

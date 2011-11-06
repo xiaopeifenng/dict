@@ -13,9 +13,9 @@ page * rb_search_page_cache(struct inode * inode, page * node)
 	while (n)
 	{
 		p = rb_entry(n, page, rb_page_cache);
-		if (wordcmp(node->word,p->word)<0)
+		if (wordcmp(&node->word,&p->word)<0)
 			n = n->rb_left;
-		else if (wordcmp(node->word,p->word)>0)
+		else if (wordcmp(&node->word,&p->word)>0)
 			n = n->rb_right;
 		else
 			return p;
@@ -36,9 +36,9 @@ static inline page * __rb_insert_page_cache(struct inode * inode,
 		parent = *p;
 		pg = rb_entry(parent, page, rb_page_cache);
 
-		if (wordcmp(pnode->word,pg->word) < 0)
+		if (wordcmp(&pnode->word,&pg->word) < 0)
 			p = &(*p)->rb_left;
-		else if (wordcmp(pnode->word,pg->word) > 0)
+		else if (wordcmp(&pnode->word,&pg->word) > 0)
 			p = &(*p)->rb_right;
 		else
 			return pg;

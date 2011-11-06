@@ -6,7 +6,7 @@
 
 typedef struct page
 {
-  word * word;
+  word word;
   struct rb_node rb_page_cache;
 } page;
 
